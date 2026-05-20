@@ -1,6 +1,10 @@
+import Example from "@/components/example";
+
 const Home = () => {
   return (
-    <h1>Hello Next.js</h1>
+    <>
+      <Example />
+    </>
   );
 };
 
