@@ -15,30 +15,60 @@ import {
 } from "@/components/ui/popover";
 
 const InputTimeCard = () => {
-  const [date, setDate] = React.useState<Date>();
+  const [sleepDate, setSleepDate] = React.useState<Date>();
+  const [bedtime, setBedtime] = React.useState("23:00:00");
+  const [wakeUpTime, setWakeUpTime] = React.useState("07:00:00");
+
+  const handleSubmit = async () => {
+    if (!sleepDate) {
+      alert("日付を選択してください");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/api/sleep-log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sleepDate: format(sleepDate, "yyyy-MM-dd"),
+          bedtime,
+          wakeUpTime,
+        }),
+      });
+
+      if (response.ok) {
+        alert("記録しました");
+      } else {
+        alert("送信に失敗しました");
+      }
+    } catch (error) {
+      alert("サーバーに接続できません");
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-60">
         <CardContent className="flex flex-col gap-5 pt-6 px-4 pb-6">
           <div className="flex flex-col gap-1 w-full">
-            <Label htmlFor="date">記録日</Label>
+            <Label htmlFor="sleepDate">記録日</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  data-empty={!date}
+                  data-empty={!sleepDate}
                   className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
                 >
-                  <span>{date ? format(date, "PPP") : "日付を選択"}</span>
+                  <span>{sleepDate ? format(sleepDate, "PPP") : "日付を選択"}</span>
                   <ChevronDownIcon />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  defaultMonth={date}
+                  selected={sleepDate}
+                  onSelect={setSleepDate}
+                  defaultMonth={sleepDate}
                   weekStartsOn={1}
                 />
               </PopoverContent>
@@ -50,23 +80,26 @@ const InputTimeCard = () => {
               type="time"
               id="bedtime"
               step="1"
-              defaultValue="23:00:00"
+              value={bedtime}
+              onChange={(e) => setBedtime(e.target.value)}
               className="appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
             />
           </div>
           <div className="flex flex-col gap-1 w-full">
-            <Label htmlFor="waketime">起床時刻</Label>
+            <Label htmlFor="wakeUpTime">起床時刻</Label>
             <Input
               type="time"
-              id="waketime"
+              id="wakeUpTime"
               step="1"
-              defaultValue="07:00:00"
+              value={wakeUpTime}
+              onChange={(e) => setWakeUpTime(e.target.value)}
               className="appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
             />
           </div>
           <Button
             type="submit"
             className="w-full bg-green-600 hover:bg-green-700 text-white"
+            onClick={handleSubmit}
           >
             記録
           </Button>
