@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"backend/database"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -35,6 +36,18 @@ func HandleSleepLog(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("date: %s, bedtime: %s, wakeUpTime: %s\n",
 		sleepLog.Date, sleepLog.Bedtime, sleepLog.WakeUpTime)
-
+	
+	_, err := database.DB.Exec(
+		"INSERT INTO sleeps (sleep_date, bed_time, wake_up_time) VALUES ($1, $2, $3)",
+		sleepLog.Date,
+		sleepLog.Bedtime,
+		sleepLog.WakeUpTime,
+	)
+	if err != nil {
+		fmt.Println("DB保存エラー:", err)
+		http.Error(w, "DB保存に失敗しました", http.StatusInternalServerError)
+		return
+	}
+	
 	w.WriteHeader(http.StatusOK)
 }
