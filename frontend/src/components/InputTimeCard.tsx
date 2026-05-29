@@ -46,8 +46,7 @@ const InputTimeCard = () => {
     }
   };
 
-  return (
-    <div className="flex min-h-screen items-center justify-center">
+  return ( 
       <Card className="w-full max-w-60">
         <CardContent className="flex flex-col gap-5 pt-6 px-4 pb-6">
           <div className="flex flex-col gap-1 w-full">
@@ -98,14 +97,13 @@ const InputTimeCard = () => {
           </div>
           <Button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            className="w-full bg-smarthr hover:bg-smarthr-hover text-white"
             onClick={handleSubmit}
           >
             記録
           </Button>
         </CardContent>
       </Card>
-    </div>
   );
 };
 
