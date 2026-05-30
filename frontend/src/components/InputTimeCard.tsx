@@ -50,7 +50,8 @@ const InputTimeCard = () => {
       <Card className="w-full max-w-60">
         <CardContent className="flex flex-col gap-5 pt-6 px-4 pb-6">
           <div className="flex flex-col gap-1 w-full">
-            <Label htmlFor="sleepDate">記録日</Label>
+            <Label className="text-base" htmlFor="sleepDate">記録日</Label>
+            <Label className="text-xs">※起床日を選択してください。</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -74,7 +75,7 @@ const InputTimeCard = () => {
             </Popover>
           </div>
           <div className="flex flex-col gap-1 w-full">
-            <Label htmlFor="bedtime">就寝時刻</Label>
+            <Label className="text-base" htmlFor="bedtime">就寝時刻</Label>
             <Input
               type="time"
               id="bedtime"
@@ -85,7 +86,7 @@ const InputTimeCard = () => {
             />
           </div>
           <div className="flex flex-col gap-1 w-full">
-            <Label htmlFor="wakeUpTime">起床時刻</Label>
+            <Label className="text-base" htmlFor="wakeUpTime">起床時刻</Label>
             <Input
               type="time"
               id="wakeUpTime"
